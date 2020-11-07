@@ -75,8 +75,10 @@ private:
 
   void  bindRequireApi(HSQOBJECT module_this);
 
-  void  resolveFileName(const char *fn, std::string &res);
-  bool  checkCircularReferences(const char *resolved_fn, const char *orig_fn);
+protected:
+  virtual void  resolveFileName(const char *fn, std::string &res);
+  virtual bool  checkCircularReferences(const char *resolved_fn, const char *orig_fn);
+public:
   enum class CompileScriptResult
   {
     Ok,
@@ -84,6 +86,7 @@ private:
     CompilationFailed
   };
   CompileScriptResult compileScript(const char *resolved_fn, const char *orig_fn, SqObjPtr &script_closure, std::string &out_err_msg);
+private:
   SqObjPtr  setupStateStorage(HSQOBJECT hContext, const char *resolved_fn);
   Module * findModule(const char * resolved_fn);
 
@@ -94,7 +97,7 @@ private:
 public:
   static const char *__main__, *__fn__;
 
-private:
+protected:
   std::vector<Module>  modules;
   std::vector<Module>  prevModules;
 
