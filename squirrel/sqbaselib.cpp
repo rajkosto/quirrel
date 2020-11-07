@@ -1519,7 +1519,7 @@ static SQInteger string_substitute(HSQUIRRELVM v)
                                 SQObjectPtr &val = stack_get(v, index);
                                 SQObjectPtr valStr;
                                 if (v->ToString(val, valStr)) {
-                                    int delta = _string(valStr)->_len - (j + 1 - i);
+                                    int delta = int(_string(valStr)->_len) - (j + 1 - i);
                                     s = replace_substring_internal(allocctx, s, buf_len, len, i, j + 1 - i,
                                         _stringval(valStr), _string(valStr)->_len);
                                     i = j + delta;
@@ -1540,7 +1540,7 @@ static SQInteger string_substitute(HSQUIRRELVM v)
                                 SQObjectPtr valStr;
                                 if (table->GetStr(s + i + 1, j - i - 1, val)) {
                                     if (v->ToString(val, valStr)) {
-                                        int delta = _string(valStr)->_len - (j + 1 - i);
+                                        int delta = int(_string(valStr)->_len) - (j + 1 - i);
                                         s = replace_substring_internal(allocctx, s, buf_len, len, i, j + 1 - i,
                                             _stringval(valStr), _string(valStr)->_len);
                                         i = j + delta;
