@@ -95,13 +95,16 @@ lower priority than ||
 
     exp := value '?.' key
 
+
 ::
 
     exp := value '?[' key ']'
 
+
 If key exists, return result of 'get' operations, else return null.
 
 ::
+
     local tbl = {bar=123}
     
     tbl.bar // returns 123
@@ -113,11 +116,30 @@ If key exists, return result of 'get' operations, else return null.
     tbl?["bar"] // returns 123
     tbl?[4567] // returns null
 
+
 This works for any type (internally done via SQVM::Get(), like an 'in' operator), including null.
 Therefore operator can be chained
 
 ::
+
     local x = tbl?.foo?.bar?.baz?["spam"]
+
+To avoid extra typing, null-propagation operators affect the rest of expression.
+Otherwise, an expression like
+
+::
+
+    a?.b.c.d
+
+would make no sense because without automatic propagation a null value's slot could possibly be accessed in runtime.
+One would have to type ?. everywhere, writing it as
+
+::
+
+    a?.b?.c?.d
+
+Instead it is done by compiler - once a null-operator is met, it is also assumed for the subsequent ., [] and () operators in an expression.
+
 
 ^^^^^^^^^^^^^
 Arithmetic
@@ -200,19 +222,23 @@ returns the second argument.
 The '!' operator will return null if the given value to negate was different than null, or a
 value different than null if the given value was null.
 
-^^^^^^^^^^^^^^^
-in operator
-^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+in operator, not in operator
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. index::
-    pair: in operator; Operators
+    pair: in operator, not in operator; Operators
 
 ::
 
     exp:= keyexp 'in' tableexp
+    exp:= keyexp 'not in' tableexp
 
 Tests the existence of a slot in a table.
-Returns true if *keyexp* is a valid key in *tableexp* ::
+'in' operator returns true if *keyexp* is a valid key in *tableexp*
+'not in' operator returns true if *keyexp* is missing in *tableexp*
+
+::
 
     local t=
     {
@@ -222,6 +248,7 @@ Returns true if *keyexp* is a valid key in *tableexp* ::
 
     if("foo" in t) dostuff("yep");
     if(123 in t) dostuff();
+    if(123 not in t) dostuff();
 
 ^^^^^^^^^^^^^^^^^^^
 instanceof operator
@@ -316,7 +343,7 @@ Table Constructor
 
 ::
 
-    tslots := ( 'id' '=' exp | '[' exp ']' '=' exp ) [',']
+    tslots := ( 'id' '=' exp | '[' exp ']' '=' exp  | 'id' ) [',']
     exp := '{' [tslots] '}'
 
 Creates a new table.::
@@ -340,12 +367,27 @@ A new slot with exp1 as key and exp2 as value is created::
         [1]="I'm the value"
     }
 
-Both syntaxes can be mixed::
+ES2015-style shorthand table initialization is supported, so the code like below ::
 
+    local x = 123
+    local y = 345
+    local tbl = {x=x, y=y}
+
+can also be written as ::
+
+    local x = 123
+    local y = 345
+    local tbl = {x, y}
+
+
+All syntaxes can be mixed::
+
+    local x = "bar"
     local table=
     {
         a=10,
         b="string",
+        x,
         [10]={},
         function bau(a,b)
         {

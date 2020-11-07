@@ -34,7 +34,7 @@ void SQLexer::Init(SQSharedState *ss, SQLEXREADFUNC rg, SQUserPointer up,Compile
     _errfunc = efunc;
     _errtarget = ed;
     _sharedstate = ss;
-    _keywords = SQTable::Create(ss, 37);
+    _keywords = SQTable::Create(ss, 38);
     ADD_KEYWORD(while, TK_WHILE);
     ADD_KEYWORD(do, TK_DO);
     ADD_KEYWORD(if, TK_IF);
@@ -74,6 +74,7 @@ void SQLexer::Init(SQSharedState *ss, SQLEXREADFUNC rg, SQUserPointer up,Compile
     ADD_KEYWORD(__FILE__,TK___FILE__);
     ADD_KEYWORD(rawcall, TK_RAWCALL);
     ADD_KEYWORD(global, TK_GLOBAL);
+    ADD_KEYWORD(not, TK_NOT);
 
 
     macroState.reset();
@@ -272,7 +273,7 @@ bool SQLexer::ProcessReaderMacro()
     if (macroState.macroParams.size() != 0) {
         append_string_to_vec(macroState.macroStr, ".subst(");
 
-        for (int i = 0; i < macroState.macroParams.size(); i++)
+        for (SQUnsignedInteger i = 0; i < macroState.macroParams.size(); i++)
             macroState.macroStr.push_back(macroState.macroParams[i]);
 
         macroState.macroStr.push_back(_SC(')'));

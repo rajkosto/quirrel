@@ -26,7 +26,9 @@ New features
 
 * Check for conflicting local variable, local functions, function arguments and constant names
 * Null propagation, null-call and null-coalescing operators
+* 'not in' operator
 * Destructuring assignment
+* ES2015-style shorthand table initialization
 * String interpolation
 * Functions declared in expressions can be named now (local foo = function foo() {})
 * Support local class declaration (local class C {})
@@ -35,7 +37,7 @@ New features
 * string default delegates: .subst(), .replace(), .join(), .split(), .concat() methods added
 * table default delegates: .map(), .each(), .findindex(), .findvalue(), .reduce(),
   __merge(), .__update() methods added
-* array default delegates: .each(), .findvalue(), .filter_inplace()  methods added
+* array default delegates: .each(), .findvalue(), .replace()  methods added
 * Support negative indexes in array.slice()
 * Compiler directives for stricter and thus safer language (some of them can be used to test upcoming or planned language changes)
 * Added C APIs not using stack pushes/pops

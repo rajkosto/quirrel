@@ -262,7 +262,11 @@ returns a section of the string as new string. Copies from start to the end (not
 
 .. sq:function:: string.indexof(substr,[startidx])
 
-Searches a sub string (substr) starting from the index startidx and returns the index of its first occurrence. If startidx is omitted the search operation starts from the beginning of the string. The function returns null if substr is not found.
+Searches for a sub string (substr) starting from the index startidx and returns the position of its first occurrence. If startidx is omitted the search operation starts from the beginning of the string. The function returns null if substr is not found.
+
+.. sq:function:: string.contains(substr,[startidx])
+
+Checks if the string contains a sub string (substr) anywhere starting from the index startidx. Returns boolean value.
 
 
 .. sq:function:: string.tolower()
@@ -410,6 +414,7 @@ returns an array containing arrays of pairs [key, value]. Useful when you need t
 
 Creates a new table of the same size. For each element in the original table invokes the function 'func' and assigns the return value of the function to the corresponding slot of the newly created table.
 Provided func can accept up to 3 arguments: slot value (required), slot key in table (optional), reference to table itself (optional).
+If callback func throws null, the element is skipped and not added to destination table.
 
 .. sq:function:: table.each(func(slot_value, [slot_key], [table_ref]))
 
@@ -476,9 +481,9 @@ returns the length of the array
 sequentially appends the values of arguments 'val' to the end of the array. Returns array itself.
 
 
-.. sq:function:: array.extend(array)
+.. sq:function:: array.extend(array_1, [array_2], [array_3], ...)
 
-Extends the array by appending all the items in the given array. Returns array itself.
+Extends the array by appending all the items in all the arrays passed as arguments. Returns target array itself.
 
 
 .. sq:function:: array.pop()
@@ -557,6 +562,7 @@ removes all the items from the array
 
 Creates a new array of the same size. For each element in the original array invokes the function 'func' and assigns the return value of the function to the corresponding element of the newly created array.
 Provided func can accept up to 3 arguments: array item value (required), array item index (optional), reference to array itself (optional).
+If callback func throws null, the element is skipped and not added to destination array.
 
 
 .. sq:function:: array.apply(func([item_value, [item_index], [array_ref]))
@@ -588,14 +594,13 @@ Finally, returns the return value of the last invocation of func.
 
 Creates a new array with all elements that pass the test implemented by the provided function. In detail, it creates a new array, for each element in the original array invokes the specified function passing the index of the element and it's value; if the function returns 'true', then the value of the corresponding element is added on the newly created array.
 
-.. sq:function:: array.filter_inplace(func(val, [index], [array_ref]))
-
-Similar to array.filter(), but modifies given array instead of creating new one.
-It removes all elements for which provided function returns false.
-
 .. sq:function:: array.indexof(value)
 
 Performs a linear search for the value in the array. Returns the index of the value if it was found null otherwise.
+
+.. sq:function:: array.contains(value)
+
+Performs a linear search for the value in the array. Returns true if it was found and false otherwise.
 
 .. sq:function:: array.findindex(func(item_value, [item_index], [array_ref]))
 
@@ -606,6 +611,10 @@ Returns the index of the value if it was found (callback returned true (non-fals
 
 Performs a linear search calling provided function for each value in the array.
 Returns matched value (for which callback returned non-false value) or default value otherwise (null if not provided).
+
+.. sq:function:: array.replace(source_arr)
+
+Copies content of source array into given array by replacing its contents. Returns target array itself.
 
 ^^^^^^^^
 Function

@@ -113,11 +113,13 @@ That doesn't mean that language can not have bugs or other issues, but it obviou
 ## Migration from Squirrel and useful tools
 
 ### Binding
-Obviously if you are using embedded language your need some bindings with your native code. We have taken **sqrat** and [heavily changed it](https://github.com/GaijinEntertainment/sqrat), reduced code, improve performance and fixed some bugs. *Probably better to rename it too.*
+Obviously if you are using embedded language your need some bindings with your native code. We took **sqrat** and [heavily changed it](https://github.com/GaijinEntertainment/sqrat), reduced code, improve performance and fixed some bugs. *Probably better to rename it too.*
 
 ### Static analyzer
-We have [changed language a lot](http://quirrel.io/doc/reference/diff_from_original.html) in the past. To be able to upgrade existing code to new language we have written a static analyzer tool. It is still under development and we would better have typehinting (that is important for dynamic typed languages), but it already can be used and it finds potential bugs everyday, before they hit QA or real users.
-We are planning to release it soon.
+We have [changed language a lot](http://quirrel.io/doc/reference/diff_from_original.html) in the past.
+To be able to upgrade existing code to new language we have written a [static analyzer tool](https://github.com/GaijinEntertainment/quirrel_static_analyzer).
+It is still under development and we would better have typehinting (that is important for dynamic typed languages),
+but it already can be used and it finds potential bugs everyday, before they hit QA or real users.
 
 ### Strict mode
 Like in Javascript, we have [strict-mode](http://quirrel.io/reference/language/compiler_directives.html). There may be more checks in a future, but you can use it for the greater good now.
@@ -141,7 +143,9 @@ Initially we have submitted a few PRs for original language.
 Our philosophy during development is inspired by [Zen of Python](https://www.python.org/dev/peps/pep-0020/) as we found that it leads to better and faster code.
 
 Guided by this and by our practice we have removed all aliases in Squirrel (like push==append) and renamed some ambiguous methods (namely 'find').
-This made language backward incompatible.
+Constants scope was made local by default, new keyword 'global' was introduced.
+Duplicate names of variables/constants and table slots raise errors now.
+This made language backward incompatible (see [documentation](http://quirrel.io/doc/reference/diff_from_original.html) for more details).
 Noticeably it was very easy to support these changes to support - just simple search & replace.
 
 But as we have made incompatibile changes we have to made a fork.
@@ -180,8 +184,6 @@ The following compilers have been confirmed to be working:
 ### Planned
 
 * Modules library documentation
-* Static analyzer release
-
 
 ### Likely to be implemented
 
@@ -191,7 +193,6 @@ The following compilers have been confirmed to be working:
 
 * Pure functions (and a special keyword for this)
 * const declaration of mutable values (forbid to assign new value for such consts)
-* Static analyzer
 * Better regexp library
 * Better Unicode support (slice, replace, etc)
 * reversed view for arrays
